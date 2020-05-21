@@ -229,7 +229,7 @@ resource "aws_route_table_association" "wp_private2_assoc" {
 resource "aws_security_group" "wp_dev_sg" {
   name        = "wp_dev_sg"
   description = "used for access to the dev instance"
-  vpc_id      = aws_vpc_wp_vpc.id
+  vpc_id      = aws_vpc.wp_vpc.id
 
   #SSH
 
@@ -263,7 +263,7 @@ resource "aws_security_group" "wp_dev_sg" {
 resource "aws_security_group" "wp_public_sg" {
   name        = "wp_public_sg"
   description = "used for elastic load balancer for public access"
-  vpc_id      = aws_vpc_wp_vpc.id
+  vpc_id      = aws_vpc.wp_vpc.id
 
   #HTTP
 
@@ -288,7 +288,7 @@ resource "aws_security_group" "wp_public_sg" {
 resource "aws_security_group" "wp_private_sg" {
   name        = "wp_private_sg"
   description = "used for private instances"
-  vpc_id      = aws_vpc_wp_vpc.id
+  vpc_id      = aws_vpc.wp_vpc.id
 
   #Access from VPC
 
@@ -312,14 +312,14 @@ resource "aws_security_group" "wp_private_sg" {
 resource "aws_security_group" "wp_rds_sg" {
   name        = "wp_rds_sg"
   description = "used for rds instances"
-  vpc_id      = aws_vpc_wp_vpc.id
+  vpc_id      = aws_vpc.wp_vpc.id
 
   # SQL access from public/private security groups
 
   ingress {
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    security_group_ids [aws_security_group.wp_dev_sg.id, aws_security_group.wp_public_sg.id, aws_security_group.wp_private_sg.id]
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.wp_dev_sg.id, aws_security_group.wp_public_sg.id, aws_security_group.wp_private_sg.id]
   }
 }
