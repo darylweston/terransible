@@ -13,3 +13,5 @@ cidrs = {
 }
 
 localip = "34.245.127.115/32"
+
+domain_name = "terransible"

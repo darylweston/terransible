@@ -313,7 +313,6 @@ resource "aws_security_group" "wp_rds_sg" {
   name        = "wp_rds_sg"
   description = "used for rds instances"
   vpc_id      = aws_vpc.wp_vpc.id
-  service_name =
 
   # SQL access from public/private security groups
 
@@ -327,25 +326,22 @@ resource "aws_security_group" "wp_rds_sg" {
 
 #-----VPC Endpoint for S3-----
 
-resource "aws_vpc_endpoint" "wp_private_s3_endpoint"
-vpc_id = aws_vpc.wp_vpc.id
-service_name = "com.amazonaws.${var.aws_region}.s3"
+resource "aws_vpc_endpoint" "wp_private_s3_endpoint" {
+  vpc_id       = aws_vpc.wp_vpc.id
+  service_name = "com.amazonaws.${var.aws_region}.s3"
 
-route_table_ids = [aws_vpc.wp_vpc.main_route_table.id, aws_vpc.wp_vpc.wp_public_rt.id]
-
-policy = <<POLICY
+  policy = <<POLICY
 {
     "Statement": [
-      {
-        "Action": "*"
+        {
+        "Action": "*",
         "Effect": "Allow",
-        "Resource": "*",
+        Resource: "*",
         "Principal": "*"
-      }
+        }
     ]
 }
 POLICY
-}
 
 #-----S3 Bucket-----
 
@@ -354,8 +350,8 @@ resource "random_id" "wp_code_bucket" {
 }
 
 resource "aws_s3_bucket" "code" {
-  bucket = "${var.domain_name}-${random_id.wp_code_bucket.dec}"
-  acl = "private"
+  bucket        = "${var.domain_name}_${random_id.wp_code_bucket.dec}"
+  acl           = "private"
   force_destroy = true
 
   tags = {
