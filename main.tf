@@ -222,3 +222,104 @@ resource "aws_route_table_association" "wp_private2_assoc" {
   subnet_id      = aws_subnet.wp_private2_subnet.id
   route_table_id = aws_default_route_table.wp_private_rt.id
 }
+
+#-----Security Groups-----
+#-----To Dev-----
+
+resource "aws_security_group" "wp_dev_sg" {
+  name        = "wp_dev_sg"
+  description = "used for access to the dev instance"
+  vpc_id      = aws_vpc_wp_vpc.id
+
+  #SSH
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.localip}"]
+  }
+
+  #HTTP
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["${var.localip}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#-----Security Groups-----
+#-----Public-----
+
+resource "aws_security_group" "wp_public_sg" {
+  name        = "wp_public_sg"
+  description = "used for elastic load balancer for public access"
+  vpc_id      = aws_vpc_wp_vpc.id
+
+  #HTTP
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#-----Security Groups-----
+#-----Private-----
+
+resource "aws_security_group" "wp_private_sg" {
+  name        = "wp_private_sg"
+  description = "used for private instances"
+  vpc_id      = aws_vpc_wp_vpc.id
+
+  #Access from VPC
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = -1
+    cidr_blocks = ["${var.vpc_cidr}"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+#-----RDS Security Groups-----
+
+resource "aws_security_group" "wp_rds_sg" {
+  name        = "wp_rds_sg"
+  description = "used for rds instances"
+  vpc_id      = aws_vpc_wp_vpc.id
+
+  # SQL access from public/private security groups
+
+  ingress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    security_group_ids [aws_security_group.wp_dev_sg.id, aws_security_group.wp_public_sg.id, aws_security_group.wp_private_sg.id]
+  }
+}
