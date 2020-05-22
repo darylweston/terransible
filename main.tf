@@ -91,7 +91,7 @@ resource "aws_route_table" "wp_public_rt" {
 #-----Private Route Table------
 
 resource "aws_default_route_table" "wp_private_rt" {
-  default_route_table_id = aws_vpc.wp_vpc.default_route_table.id
+  default_route_table_id = aws_vpc.wp_vpc.default_route_table_id
 
   tags = {
     Name = "wp_private"
@@ -329,19 +329,19 @@ resource "aws_security_group" "wp_rds_sg" {
 resource "aws_vpc_endpoint" "wp_private_s3_endpoint" {
   vpc_id       = aws_vpc.wp_vpc.id
   service_name = "com.amazonaws.${var.aws_region}.s3"
-
-  policy = <<POLICY
+  policy       = <<POLICY
 {
     "Statement": [
         {
         "Action": "*",
         "Effect": "Allow",
-        Resource: "*",
+        "Resource": "*",
         "Principal": "*"
         }
     ]
 }
 POLICY
+}
 
 #-----S3 Bucket-----
 
