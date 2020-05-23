@@ -1,6 +1,7 @@
-aws_region  = "eu-west-2"
-aws_profile = "superhero"
-vpc_cidr    = "10.0.0.0/16"
+aws_region   = "eu-west-2"
+alias_region = "eu-west"
+aws_profile  = "superhero"
+vpc_cidr     = "10.0.0.0/16"
 
 cidrs = {
   public1  = "10.0.1.0/24"
@@ -15,3 +16,8 @@ cidrs = {
 localip = "34.245.127.115/32"
 
 domain_name = "terransible"
+
+db_instance_class = "db.t2.micro"
+dbname            = "superherodb"
+dbuser            = "superhero"
+dbpassword        = "superheropass"
