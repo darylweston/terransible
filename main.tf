@@ -527,6 +527,7 @@ resource "aws_autoscaling_group" "wp_asg" {
 resource "aws_route53_zone" "primary" {
   name              = "${var.domain_name}.com"
   delegation_set_id = var.delegation_set
+  vpc_id            = aws_vpc.wp_vpc.id
 }
 
 #WWW
