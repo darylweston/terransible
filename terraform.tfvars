@@ -13,7 +13,7 @@ cidrs = {
   rds3     = "10.0.7.0/24"
 }
 
-localip = "34.245.127.115/32"
+localip = "87.115.187.103/32"
 
 domain_name = "terransible"
 
