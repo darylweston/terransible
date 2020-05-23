@@ -505,7 +505,7 @@ resource "aws_autoscaling_group" "wp_asg" {
   health_check_type         = var.asg_hct
   desired_capacity          = var.asg_cap
   force_delete              = true
-  load_balancers            = aws_elb.wp_elb.id
+  load_balancers            = [aws_elb.wp_elb.id]
   vpc_zone_identifier       = [aws_subnet.wp_private1_subnet.id, aws_subnet.wp_private2_subnet.id]
   launch_configuration      = aws_launch_configuration.wp_lc.name
 
