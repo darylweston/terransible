@@ -527,7 +527,10 @@ resource "aws_autoscaling_group" "wp_asg" {
 resource "aws_route53_zone" "primary" {
   name              = "${var.domain_name}.com"
   delegation_set_id = var.delegation_set
-  vpc_id            = aws_vpc.wp_vpc.id
+
+  vpc {
+    vpc_id = aws_vpc.wp_vpc.id
+  }
 }
 
 #WWW
@@ -556,8 +559,11 @@ resource "aws_route53_record" "dev" {
 #Private Zone
 
 resource "aws_route53_zone" "secondary" {
-  name   = "${var.domain_name}.com"
-  vpc_id = aws_vpc.wp_vpc.id
+  name = "${var.domain_name}.com"
+
+  vpc {
+    vpc_id = aws_vpc.wp_vpc.id
+  }
 }
 
 #DB
