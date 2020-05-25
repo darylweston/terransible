@@ -43,24 +43,22 @@ resource "aws_iam_role_policy" "s3_access_policy" {
   name = "s3_access_policy"
   role = aws_iam_role.s3_access_role.id
 
-  policy = <<EOF
-{
-  "version": "2012-10-17",
-  "Statement": [
-    {
+  policy = <<-EOF
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Action": [
+          "s3:*"
+        ],
         "Effect": "Allow",
-        "Action": "s3:*",
         "Resource": "*"
-    }
-  ]
-}
-EOF
+      }
+    ]
+  }
+  EOF
 }
 
-# resource "aws_iam_role_policy_attachment" "allow-s3-access" {
-#   role       = aws_iam_role.s3_access_role.name
-#   policy_arn = aws_iam_role_policy.s3_access_policy.arn
-# }
 
 
 
