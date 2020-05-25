@@ -298,8 +298,8 @@ resource "aws_security_group" "wp_private_sg" {
   #Access from VPC
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 0
+    to_port     = 0
     protocol    = -1
     cidr_blocks = ["${var.vpc_cidr}"]
   }
@@ -528,9 +528,9 @@ resource "aws_route53_zone" "primary" {
   name              = "${var.domain_name}.com"
   delegation_set_id = var.delegation_set
 
-  vpc {
-    vpc_id = aws_vpc.wp_vpc.id
-  }
+  # vpc {
+  #   vpc_id = aws_vpc.wp_vpc.id
+  # }
 }
 
 #WWW
@@ -561,9 +561,9 @@ resource "aws_route53_record" "dev" {
 resource "aws_route53_zone" "secondary" {
   name = "${var.domain_name}.com"
 
-  vpc {
-    vpc_id = aws_vpc.wp_vpc.id
-  }
+  # vpc {
+  #   vpc_id = aws_vpc.wp_vpc.id
+  # }
 }
 
 #DB
