@@ -36,24 +36,9 @@ resource "aws_iam_role_policy" "s3_access_policy" {
 EOF
 }
 
-resource "aws_iam_role" "s3_access_role" {
-  name = "s3_access_role"
-
-  assume_role_policy = <<EOF
-{
-  "version": "2012-1017",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+resource "aws_iam_role_policy_attachment" "allow-s3-access" {
+  role       = "${aws_iam_instance_profile.s3_access_profile.name}"
+  policy_arn = aws_iam_role_policy.s3_access_policy.arn
 }
 
 #-----VPC------
