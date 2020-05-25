@@ -368,8 +368,8 @@ resource "aws_s3_bucket" "code" {
 
 resource "aws_db_instance" "wp_db" {
   allocated_storage      = 10
-  engine                 = "aurora-postgresql"
-  engine_version         = "5.6.2"
+  engine                 = "MySQL"
+  engine_version         = "5.6.40"
   instance_class         = var.db_instance_class
   name                   = var.dbname
   username               = var.dbuser
