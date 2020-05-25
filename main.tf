@@ -532,7 +532,7 @@ resource "aws_autoscaling_group" "wp_asg" {
 #Primary Zone
 
 resource "aws_route53_zone" "primary" {
-  name              = "${var.domain_name}.com"
+  name              = "${var.domain_name}.co.uk"
   delegation_set_id = var.delegation_set
 
   # vpc {
@@ -543,7 +543,7 @@ resource "aws_route53_zone" "primary" {
 #WWW
 resource "aws_route53_record" "www" {
   zone_id = aws_route53_zone.primary.zone_id
-  name    = "www.${var.domain_name}.com"
+  name    = "www.${var.domain_name}.co.uk"
   type    = "A"
 
   alias {
@@ -557,7 +557,7 @@ resource "aws_route53_record" "www" {
 
 resource "aws_route53_record" "dev" {
   zone_id = aws_route53_zone.primary.zone_id
-  name    = "dev.${var.domain_name}.com"
+  name    = "dev.${var.domain_name}.co.uk"
   type    = "A"
   ttl     = "300"
   records = [aws_instance.wp_dev.public_ip]
@@ -566,7 +566,7 @@ resource "aws_route53_record" "dev" {
 #Private Zone
 
 resource "aws_route53_zone" "secondary" {
-  name = "${var.domain_name}.com"
+  name = "${var.domain_name}.co.uk"
 
   # vpc {
   #   vpc_id = aws_vpc.wp_vpc.id
@@ -577,7 +577,7 @@ resource "aws_route53_zone" "secondary" {
 
 resource "aws_route53_record" "db" {
   zone_id = aws_route53_zone.secondary.zone_id
-  name    = "db.${var.domain_name}.com"
+  name    = "db.${var.domain_name}.co.uk"
   type    = "CNAME"
   ttl     = "300"
   records = [aws_db_instance.wp_db.address]
