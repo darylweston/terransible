@@ -57,10 +57,10 @@ resource "aws_iam_role_policy" "s3_access_policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "allow-s3-access" {
-  role       = aws_iam_role.s3_access_role.name
-  policy_arn = aws_iam_role_policy.s3_access_policy.arn
-}
+# resource "aws_iam_role_policy_attachment" "allow-s3-access" {
+#   role       = aws_iam_role.s3_access_role.name
+#   policy_arn = aws_iam_role_policy.s3_access_policy.arn
+# }
 
 
 
